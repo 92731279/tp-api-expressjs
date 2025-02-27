@@ -1,32 +1,32 @@
-const express = require("express")
-const bodyParser = require("body-parser")
+const express = require("express");
 const router = express.Router();
+
 const persons = [
-    {id:0, name:'Jhon'},
-    {id:1, name:'Jane'}
+    { id: 0, name: 'Jhon' },
+    { id: 1, name: 'Jane' }
 ];
 
-router.use(bodyParser.json())
+// Récupérer la liste des personnes
+router.get('/', (req, res) => {
+    res.json(persons);
+});
 
-router.get('/persons',(req,res) => {
-    rep.json(persons)
-
-})
-
-// chercher des personnes par id (utilisant get)
-router.get('/persons/:id',(req,res) => {
-   const person=persons.find(p=>p.id === parseInt (req.params.id));
-    if(!person) 
-        return res.status(404).json({error : 'person not found'});
+// Chercher une personne par ID
+router.get('/:id', (req, res) => {
+    const person = persons.find(p => p.id === parseInt(req.params.id));
+    if (!person) 
+        return res.status(404).json({ error: 'Person not found' });
     res.json(person);
-})
+});
 
-// ajouter une personne 
-router.post('/persons',(req,res)=>{
-    const newperson = {
-        id:persons.length,
-        
-    }
-})
+// Ajouter une nouvelle personne
+router.post('/', (req, res) => {
+    const newPerson = {
+        id: Date.now(), // Générer un ID unique
+        name: req.body.name
+    };
+    persons.push(newPerson);
+    res.status(201).json(newPerson);
+});
 
 module.exports = router;
